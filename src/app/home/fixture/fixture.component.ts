@@ -15,7 +15,7 @@ export class FixtureComponent implements OnInit {
 
   teamId: number | undefined;
   year: number | undefined;
-  noFixturesPresent = false;
+  noFixturesPresent : boolean = false;
   fixtures : Fixture[] = [];
 
   constructor(private route: ActivatedRoute, private location : Location, private fixtureService: FixtureService, private snackBar: MatSnackBar){}
@@ -32,6 +32,10 @@ export class FixtureComponent implements OnInit {
             if(onSuccess.response){
               this.fixtures = onSuccess.response;
             }
+            else{
+              this.noFixturesPresent = true
+              this.snackBar.open("There no fixtures for the year " + this.year, " ", {duration:2000})
+            }
           },
           error: () => {
             this.snackBar.open("Error loading the fixtures", " ", {duration:2000})
@@ -40,7 +44,7 @@ export class FixtureComponent implements OnInit {
 
       }
       else{
-        this.noFixturesPresent = true
+        this.snackBar.open("Error loading the fixtures", " ", {duration:2000})
       }
     })
   }
