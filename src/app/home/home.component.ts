@@ -11,32 +11,32 @@ import { MatSnackBar } from "@angular/material/snack-bar";
   styleUrls: ['./home.component.scss']
 })
 
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit {
 
-  buttons : FuButton[] = [
-    {name: 'England', selected: false, idLabel: 'england', idStanding: 39},
-    {name: 'Spain', selected: false, idLabel: 'spain', idStanding: 140},
-    {name: 'Germany', selected: false, idLabel: 'germany', idStanding: 78},
-    {name: 'France', selected: false, idLabel: 'france', idStanding: 61},
-    {name: 'Italy', selected: false, idLabel: 'italy', idStanding: 135}
+  buttons: FuButton[] = [
+    { name: 'England', selected: false, idLabel: 'england', idStanding: 39 },
+    { name: 'Spain', selected: false, idLabel: 'spain', idStanding: 140 },
+    { name: 'Germany', selected: false, idLabel: 'germany', idStanding: 78 },
+    { name: 'France', selected: false, idLabel: 'france', idStanding: 61 },
+    { name: 'Italy', selected: false, idLabel: 'italy', idStanding: 135 }
   ]
 
   selectedLeague: Standing[] = [];
   currentYear: number = 0;
-  displayedColumns : string[] = ['rank','icon', 'name', 'games', 'wins', 'loses', 'draws', 'goalDifference', 'points']
+  displayedColumns: string[] = ['rank', 'icon', 'name', 'games', 'wins', 'loses', 'draws', 'goalDifference', 'points']
 
-  buttonSelected : string = '';
+  buttonSelected: string = '';
 
-  constructor(private homeService: HomeService, private router: Router, private activatedRoute: ActivatedRoute, private snackBar: MatSnackBar){}
+  constructor(private homeService: HomeService, private router: Router, private activatedRoute: ActivatedRoute, private snackBar: MatSnackBar) { }
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.currentYear = new Date().getFullYear();
     const lastSelectedLeague = sessionStorage.getItem("lastSelectedLeague");
-    if(lastSelectedLeague){
+    if (lastSelectedLeague) {
       this.selectedLeague = JSON.parse(lastSelectedLeague)
       this.buttons.forEach(button => {
         const lastButtonSelected = sessionStorage.getItem("lastSelectedLeagueName")
-        if(lastButtonSelected && JSON.parse(lastButtonSelected) === button.name){
+        if (lastButtonSelected && JSON.parse(lastButtonSelected) === button.name) {
           button.selected = true;
         }
       })
@@ -44,49 +44,54 @@ export class HomeComponent implements OnInit{
   }
 
 
-  public selectedButton(buttonName: string, idStanding: number): void{
+  public selectedButton(buttonName: string, idStanding: number): void {
     this.selectButton(buttonName)
     const standingInStorage = sessionStorage.getItem(buttonName)
-    if(standingInStorage){
+    if (standingInStorage) {
       this.selectedLeague = JSON.parse(standingInStorage)
+      this.cacheLastSelectedLeague()
     }
-    else{
+    else {
       this.homeService.getStandings(idStanding, this.currentYear).subscribe({
-        next: (onSuccess) =>{
-          if(onSuccess.response.length > 0 &&
-             onSuccess.response[0].league &&
-             onSuccess.response[0].league.standings &&
-             onSuccess.response[0].league.standings.length > 0){
+        next: (onSuccess) => {
+          if (onSuccess.response.length > 0 &&
+            onSuccess.response[0].league &&
+            onSuccess.response[0].league.standings &&
+            onSuccess.response[0].league.standings.length > 0) {
             this.selectedLeague = onSuccess.response[0].league.standings[0];
             sessionStorage.setItem(buttonName, JSON.stringify(this.selectedLeague))
+            this.cacheLastSelectedLeague()
 
           }
-          else{
-            this.snackBar.open("No standings found for the selected country and year " + this.currentYear, " ", {duration:2000})
+          else {
+            this.snackBar.open("No standings found for the selected country and year " + this.currentYear, " ", { duration: 2000 })
           }
         },
         error: () => {
-          this.snackBar.open("Error loading the standings", " ", {duration:2000})
+          this.snackBar.open("Error loading the standings", " ", { duration: 2000 })
         }
       })
     }
 
   }
 
-  private selectButton(buttonName:string): void{
+  private cacheLastSelectedLeague(): void {
+    sessionStorage.setItem("lastSelectedLeague", JSON.stringify(this.selectedLeague))
+    sessionStorage.setItem("lastSelectedLeagueName", JSON.stringify(this.buttonSelected))
+  }
+
+  private selectButton(buttonName: string): void {
     this.buttonSelected = buttonName
     this.buttons.forEach(button => {
-      if(button.name === buttonName) button.selected = true
-      else{
+      if (button.name === buttonName) button.selected = true
+      else {
         button.selected = false
       }
     })
   }
 
-  public goToTeamFixtures(teamId: number): void{
-    sessionStorage.setItem("lastSelectedLeague", JSON.stringify(this.selectedLeague))
-    sessionStorage.setItem("lastSelectedLeagueName", JSON.stringify(this.buttonSelected))
-    this.router.navigate(["fixture/" + teamId + "/" + this.currentYear], {relativeTo: this.activatedRoute})
+  public goToTeamFixtures(teamId: number): void {
+    this.router.navigate(["fixture/" + teamId + "/" + this.currentYear], { relativeTo: this.activatedRoute })
   }
 
 
