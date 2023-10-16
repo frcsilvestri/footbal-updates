@@ -1,0 +1,16 @@
+<div *ngIf="noFixturesPresent">No Fixtures present</div>
+<div *ngIf="!noFixturesPresent && teamId && year" class="fixture-card">
+  <div *ngFor="let fixture of fixtures">
+    <div class="fixture-match">
+      <img *ngIf="fixture.teams?.home?.logo" src="{{fixture.teams?.home?.logo}}" width="35" height="35">
+      <span *ngIf="fixture.teams?.home?.name">{{fixture.teams?.home?.name}}</span>
+      <span *ngIf="fixture.goals">{{fixture.goals.home}}</span>
+      -
+      <span *ngIf="fixture.goals">{{fixture.goals.away}}</span>
+      <span *ngIf="fixture.teams?.away?.name">{{fixture.teams?.away?.name}}</span>
+      <img *ngIf="fixture.teams?.away?.logo" src="{{fixture.teams?.away?.logo}}" width="35" height="35">
+    </div>
+  </div>
+</div>
+
+<button mat-raised-button color="warn" class="left-margin-3" (click)="back()">Back</button>

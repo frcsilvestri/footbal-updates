@@ -1,0 +1,62 @@
+<div id="home-page" class="home-style">
+  <div id="page-title" class="app-title">Footbal Updates</div>
+  <div id="toolbar" class="toolbar-style">
+    <div *ngFor="let button of buttons">
+      <button id="{{button.idLabel}}Select" mat-button (click)="selectedButton(button.name, button.idStanding)" [ngClass]="{'button-selected' : button.selected}">{{ button.name }}</button>
+    </div>
+  </div>
+
+  <div id="table" *ngIf="selectedLeague.length > 0" class="table-responsive">
+    <table mat-table [dataSource]="selectedLeague" class="mat-elevation-z8">
+
+
+      <ng-container matColumnDef="rank" id="rankColumn">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element"> {{element.rank}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="icon" id="iconColumn">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element"><img src="{{element.team.logo}}" height="35" width="35"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="name" id="nameColumn">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element" class="pointer" (click)="goToTeamFixtures(element.team.id)"> {{element.team.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="games" id="gamesColumn">
+        <th mat-header-cell *matHeaderCellDef> Games </th>
+        <td mat-cell *matCellDef="let element"> {{element.all.played}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="wins" id="winsColumn">
+        <th mat-header-cell *matHeaderCellDef> W </th>
+        <td mat-cell *matCellDef="let element"> {{element.all.win}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="loses" id="losesColumn">
+        <th mat-header-cell *matHeaderCellDef> L </th>
+        <td mat-cell *matCellDef="let element"> {{element.all.lose}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="draws" id="drawsColumn">
+        <th mat-header-cell *matHeaderCellDef> D </th>
+        <td mat-cell *matCellDef="let element"> {{element.all.draw}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="goalDifference" id="goalDifferenceColumn">
+        <th mat-header-cell *matHeaderCellDef>Goal Difference</th>
+        <td mat-cell *matCellDef="let element"> {{element.goalsDiff}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="points" id="pointsColumn">
+        <th mat-header-cell *matHeaderCellDef>Points</th>
+        <td mat-cell *matCellDef="let element"> {{element.points}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>

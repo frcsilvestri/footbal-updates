@@ -1,0 +1,30 @@
+.button-selected{
+  font-weight: bold;
+}
+
+.app-title{
+  text-align:center;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size:23px;
+}
+
+.toolbar-style{
+  display: flex;
+  justify-content: center;
+  background-color: #ff9797;
+  border-radius: 0.5rem;
+  margin-bottom: 10px;
+  box-shadow: 0.3rem 0.3rem 0.3rem grey;
+}
+
+.pointer{
+  cursor: pointer
+}
+
+.home-style{
+  padding-left:10rem;
+  padding-right:10rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem
+}

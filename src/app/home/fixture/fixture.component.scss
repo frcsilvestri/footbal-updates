@@ -1,0 +1,22 @@
+.fixture-card{
+  background-color: #edc5c5;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0.3rem 0.3rem 0.3rem grey;
+  margin: 3rem;
+}
+
+.fixture-match{
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: whitesmoke;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  margin: 1rem;
+  align-items:center
+}
+
+.left-margin-3{
+  margin-left: 3rem
+}
