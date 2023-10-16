@@ -43,6 +43,7 @@ export class HomeComponent implements OnInit{
     }
   }
 
+
   public selectedButton(buttonName: string, idStanding: number): void{
     this.selectButton(buttonName)
     const standingInStorage = sessionStorage.getItem(buttonName)
@@ -59,6 +60,9 @@ export class HomeComponent implements OnInit{
             this.selectedLeague = onSuccess.response[0].league.standings[0];
             sessionStorage.setItem(buttonName, JSON.stringify(this.selectedLeague))
 
+          }
+          else{
+            this.snackBar.open("No standings found for the selected country and year " + this.currentYear, " ", {duration:2000})
           }
         },
         error: () => {
