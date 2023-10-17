@@ -8,7 +8,7 @@ import { Fixture } from "../../model/fixture";
 })
 export class FixtureService {
 
-  private apiSportsUrl: string = "https://v3.football.api-sports.io/" 
+  private apiSportsUrl: string = "https://v3.football.api-sports.io/"
 
   constructor(private http:HttpClient) { }
 
@@ -20,7 +20,7 @@ export class FixtureService {
     const requestOption = {
       headers: new HttpHeaders(headerData)
     }
-    return this.http.get<{response: Fixture[]}>(this.apiSportsUrl + 'fixtures?team=' + idTeam + "&season=" + year + "&last=10",  requestOption)
+    return this.http.get<{response: Fixture[]}>(this.apiSportsUrl + 'fixtures?team=' + idTeam + "&season=" + year + "&last=10&status=FT-AET-PEN",  requestOption)
   }
 
 }
